@@ -1,14 +1,10 @@
 package com.boosting.code.document_server.services;
 
-import com.boosting.code.document_server.dto.DocumentInfo;
-import com.boosting.code.document_server.dto.DocumentInfoDto;
-
-import java.util.List;
+import com.boosting.code.document_server.dto.ServiceInfo;
+import com.boosting.code.document_server.dto.MetaDocumentDto;
+import com.boosting.code.document_server.dto.ServiceInfoDto;
 
 public interface IDocumentService {
-    List<DocumentInfo> getDocuments();
 
-    DocumentInfoDto saveDocument(DocumentInfoDto documentInfo);
-
-    DocumentInfoDto getParticularDocumentInfo(String documentId);
+    ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto);
 }
