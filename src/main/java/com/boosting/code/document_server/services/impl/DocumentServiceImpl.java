@@ -6,6 +6,7 @@ import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfoDto;
 import com.boosting.code.document_server.entities.Document;
 import com.boosting.code.document_server.entities.MetaDocument;
+import com.boosting.code.document_server.models.FileInfo;
 import com.boosting.code.document_server.services.IDocumentSenderService;
 import com.boosting.code.document_server.services.IDocumentService;
 import com.boosting.code.document_server.services.IMetaDocumentService;
@@ -47,7 +48,7 @@ public class DocumentServiceImpl implements IDocumentService {
 
         ServiceInfo senderInfo =documentSenderService.sendDocument(document);
 
-        boolean state = metaInfo.isSuccessfull() && senderInfo.isSuccessfull();
+        boolean state = metaInfo.isSuccessful() && senderInfo.isSuccessful();
 
         ServiceInfoDto response= new ServiceInfoDto(state, new MetaDocumentDto(metaDocument.getName(),
                                                                                 metaDocument.getYear(),
@@ -62,5 +63,25 @@ public class DocumentServiceImpl implements IDocumentService {
 
         return response;
 
+    }
+
+    @Override
+    public MetaDocumentDto processDownload(String uuid) {
+
+        LOGGER.info("DocumentService received UUID: {} to download document", uuid);
+
+
+        MetaDocumentDto metaInfo = metaDocumentService.getMetaDocument(uuid);
+        if(null == metaInfo){
+            return null;
+        }
+
+        Document document =documentSenderService.getDocument(uuid);
+
+        metaInfo.setFileInfo(new FileInfo(document.getMime(), document.getData()));
+
+        LOGGER.info("DocumentService completed the processing, returning: {}", metaInfo);
+
+        return metaInfo;
     }
 }

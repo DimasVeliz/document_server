@@ -5,4 +5,6 @@ import com.boosting.code.document_server.entities.Document;
 
 public interface IDocumentSenderService {
     ServiceInfo sendDocument(Document document);
+
+    Document getDocument(String uuid);
 }

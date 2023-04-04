@@ -7,4 +7,6 @@ import com.boosting.code.document_server.dto.ServiceInfoDto;
 public interface IDocumentService {
 
     ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto);
+
+    MetaDocumentDto processDownload(String uuid);
 }

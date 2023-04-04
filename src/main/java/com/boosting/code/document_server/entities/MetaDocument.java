@@ -28,6 +28,9 @@ public class MetaDocument {
         this.uuid = uuid;
     }
 
+    public MetaDocument() {
+    }
+
     public int getId() {
         return id;
     }

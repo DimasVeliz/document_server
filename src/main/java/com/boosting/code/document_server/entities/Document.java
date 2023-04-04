@@ -12,6 +12,9 @@ public class Document {
         this.data = data;
     }
 
+    public Document() {
+    }
+
     public String getUuid() {
         return uuid;
     }

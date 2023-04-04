@@ -1,5 +1,6 @@
 package com.boosting.code.document_server.services.impl;
 
+import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfo;
 import com.boosting.code.document_server.entities.MetaDocument;
 import com.boosting.code.document_server.repositories.IMetaDocumentRepository;
@@ -26,5 +27,17 @@ public class MetaDocumentServiceImpl implements IMetaDocumentService {
 
         }
         return new ServiceInfo(true,"Metadata Successfully inserted into the DB");
+    }
+
+    @Override
+    public MetaDocumentDto getMetaDocument(String uuid) {
+        MetaDocument response =repository.findByUuid(uuid);
+        if(null == response){
+            return null;
+
+        }
+        return new MetaDocumentDto(response.getName(),
+                                   response.getYear(),
+                                   response.getOwner(),null);
     }
 }

@@ -1,21 +1,24 @@
 package com.boosting.code.document_server.dto;
 
 public class ServiceInfo {
-    private boolean isSuccessfull;
+    private boolean isSuccessful;
     private String message;
 
 
-    public ServiceInfo(boolean isSuccessfull, String message) {
+    public ServiceInfo(boolean isSuccessful, String message) {
         this.message = message;
-        this.isSuccessfull=isSuccessfull;
+        this.isSuccessful=isSuccessful;
     }
 
-    public boolean isSuccessfull() {
-        return isSuccessfull;
+    public ServiceInfo() {
     }
 
-    public void setSuccessfull(boolean successfull) {
-        isSuccessfull = successfull;
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(boolean successful) {
+        isSuccessful = successful;
     }
 
     public String getMessage() {
