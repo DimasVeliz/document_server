@@ -35,7 +35,6 @@ public class DocumentServiceImpl implements IDocumentService {
     public ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto) {
 
         LOGGER.info("DocumentService received data to process: {}", metaDocumentDto);
-        validateFileName(metaDocumentDto);
 
         String uuid = String.valueOf(java.util.UUID.randomUUID());
 
@@ -66,15 +65,6 @@ public class DocumentServiceImpl implements IDocumentService {
         LOGGER.info("DocumentService completed the processing, returning: {}", response);
 
         return response;
-
-    }
-
-    private void validateFileName(MetaDocumentDto metaDocumentDto) {
-        if(!metaDocumentDto.getName().contains("."))
-            throw new DocumentException("file name does not contain the extension");
-        String name_extension= metaDocumentDto.getName().split("\\.")[1];
-        if(!metaDocumentDto.getFileInfo().getMime().contains(name_extension))
-            throw new DocumentException("file name's extension does not match the mime-type");
 
     }
 
