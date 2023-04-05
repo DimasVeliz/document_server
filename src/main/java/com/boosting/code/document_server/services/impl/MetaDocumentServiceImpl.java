@@ -1,5 +1,6 @@
 package com.boosting.code.document_server.services.impl;
 
+import com.boosting.code.document_server.dto.MetaDocumentDisplayDto;
 import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfo;
 import com.boosting.code.document_server.entities.MetaDocument;
@@ -7,6 +8,10 @@ import com.boosting.code.document_server.repositories.IMetaDocumentRepository;
 import com.boosting.code.document_server.services.IMetaDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class MetaDocumentServiceImpl implements IMetaDocumentService {
@@ -39,5 +44,17 @@ public class MetaDocumentServiceImpl implements IMetaDocumentService {
         return new MetaDocumentDto(response.getName(),
                                    response.getYear(),
                                    response.getOwner(),null);
+    }
+
+    @Override
+    public List<MetaDocumentDisplayDto> getAllMetadocuments() {
+        List<MetaDocument> metaDocuments = repository.findAll();
+        if(metaDocuments.isEmpty()) return Collections.emptyList();
+
+        return metaDocuments.stream().map(metaDoc -> new MetaDocumentDisplayDto(metaDoc.getName(),
+                                                                        metaDoc.getYear(),
+                                                                        metaDoc.getOwner(),
+                                                                        metaDoc.getUuid()))
+                                                                        .toList();
     }
 }

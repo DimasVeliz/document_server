@@ -1,6 +1,7 @@
 package com.boosting.code.document_server.controller;
 
 
+import com.boosting.code.document_server.dto.MetaDocumentDisplayDto;
 import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfoDto;
 import com.boosting.code.document_server.services.IDocumentService;
@@ -12,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @RequestMapping("/api/documents")
 public class DocumentController {
@@ -23,6 +27,19 @@ public class DocumentController {
     @Autowired
     public DocumentController(IDocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @GetMapping("/metadocuments")
+    public ResponseEntity<List<MetaDocumentDisplayDto>> getListOfMetadata()
+    {
+        LOGGER.info("Attempting to get all the Metadata from Documents");
+
+        List<MetaDocumentDisplayDto> metadataResponse =documentService.getDocumentsMetaData();
+
+        LOGGER.info("Successfully got all the Metadata from Documents: {}",metadataResponse);
+
+
+        return new ResponseEntity<>(metadataResponse, HttpStatus.OK);
     }
 
     @PostMapping
@@ -38,7 +55,7 @@ public class DocumentController {
         return new ResponseEntity<>(infoResponse, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/download")
     public ResponseEntity<byte[]> downloadSpecificDocument(@RequestParam String documentUUID){
         LOGGER.info("Attempting to download a Document with uuid: {}", documentUUID);
 
@@ -47,6 +64,8 @@ public class DocumentController {
         if(null==metaDocumentDto) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         HttpHeaders headers = makeHeaders(metaDocumentDto);
+        LOGGER.info("Successfully downloaded a Document with uuid: {}", documentUUID);
+
         return new ResponseEntity<>(metaDocumentDto.getFileInfo().getData(),headers, HttpStatus.OK);
     }
 

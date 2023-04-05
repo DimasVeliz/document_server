@@ -6,11 +6,11 @@ public class ServiceInfoDto {
 
     private boolean isSuccessfull;
 
-    MetaDocumentDto metadata;
+    MetaDocumentDisplayDto metadata;
 
     List<ServiceInfo> servicesInfo;
 
-    public ServiceInfoDto(boolean isSuccessfull, MetaDocumentDto metadata,List<ServiceInfo> servicesInfo) {
+    public ServiceInfoDto(boolean isSuccessfull, MetaDocumentDisplayDto metadata,List<ServiceInfo> servicesInfo) {
         this.isSuccessfull = isSuccessfull;
         this.metadata = metadata;
         this.servicesInfo = servicesInfo;
@@ -24,11 +24,11 @@ public class ServiceInfoDto {
         isSuccessfull = successfull;
     }
 
-    public MetaDocumentDto getMetadata() {
+    public MetaDocumentDisplayDto getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(MetaDocumentDto metadata) {
+    public void setMetadata(MetaDocumentDisplayDto metadata) {
         this.metadata = metadata;
     }
 

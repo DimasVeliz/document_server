@@ -1,11 +1,13 @@
 package com.boosting.code.document_server.services.impl;
 
 import com.boosting.code.document_server.controller.DocumentController;
+import com.boosting.code.document_server.dto.MetaDocumentDisplayDto;
 import com.boosting.code.document_server.dto.ServiceInfo;
 import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfoDto;
 import com.boosting.code.document_server.entities.Document;
 import com.boosting.code.document_server.entities.MetaDocument;
+import com.boosting.code.document_server.exceptions.DocumentException;
 import com.boosting.code.document_server.models.FileInfo;
 import com.boosting.code.document_server.services.IDocumentSenderService;
 import com.boosting.code.document_server.services.IDocumentService;
@@ -13,8 +15,8 @@ import com.boosting.code.document_server.services.IMetaDocumentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DocumentServiceImpl implements IDocumentService {
@@ -33,6 +35,8 @@ public class DocumentServiceImpl implements IDocumentService {
     public ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto) {
 
         LOGGER.info("DocumentService received data to process: {}", metaDocumentDto);
+        validateFileName(metaDocumentDto);
+
         String uuid = String.valueOf(java.util.UUID.randomUUID());
 
         MetaDocument metaDocument = new MetaDocument(0,metaDocumentDto.getName(),
@@ -50,10 +54,10 @@ public class DocumentServiceImpl implements IDocumentService {
 
         boolean state = metaInfo.isSuccessful() && senderInfo.isSuccessful();
 
-        ServiceInfoDto response= new ServiceInfoDto(state, new MetaDocumentDto(metaDocument.getName(),
+        ServiceInfoDto response= new ServiceInfoDto(state, new MetaDocumentDisplayDto(metaDocument.getName(),
                                                                                 metaDocument.getYear(),
                                                                                 metaDocument.getOwner(),
-                                                                                null),
+                                                                                metaDocument.getUuid()),
                                                     new ArrayList<>());
 
         response.getServicesInfo().add(metaInfo);
@@ -62,6 +66,15 @@ public class DocumentServiceImpl implements IDocumentService {
         LOGGER.info("DocumentService completed the processing, returning: {}", response);
 
         return response;
+
+    }
+
+    private void validateFileName(MetaDocumentDto metaDocumentDto) {
+        if(!metaDocumentDto.getName().contains("."))
+            throw new DocumentException("file name does not contain the extension");
+        String name_extension= metaDocumentDto.getName().split("\\.")[1];
+        if(!metaDocumentDto.getFileInfo().getMime().contains(name_extension))
+            throw new DocumentException("file name's extension does not match the mime-type");
 
     }
 
@@ -83,5 +96,13 @@ public class DocumentServiceImpl implements IDocumentService {
         LOGGER.info("DocumentService completed the processing, returning: {}", metaInfo);
 
         return metaInfo;
+    }
+
+    @Override
+    public List<MetaDocumentDisplayDto> getDocumentsMetaData() {
+
+        List<MetaDocumentDisplayDto> metaDocuments = metaDocumentService.getAllMetadocuments();
+
+        return metaDocuments;
     }
 }

@@ -14,6 +14,9 @@ public class WebConfig {
         WebClient client = WebClient.builder()
                 .baseUrl(Constants.OBJECT_STORE_HOST)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                .codecs(codecs -> codecs
+                                .defaultCodecs()
+                                .maxInMemorySize(5000 * 1024))
                 .build();
 
         return client;
@@ -23,6 +26,9 @@ public class WebConfig {
         WebClient client = WebClient.builder()
                 .baseUrl(Constants.OBJECT_STORE_HOST)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .codecs(codecs -> codecs
+                                .defaultCodecs()
+                                .maxInMemorySize(5000 * 1024))
                 .build();
 
         return client;
