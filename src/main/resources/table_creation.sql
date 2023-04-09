@@ -1,4 +1,5 @@
 create database documentation_server;
+use documentation_server;
 
 CREATE TABLE metadocument (
 id int NOT NULL AUTO_INCREMENT,
