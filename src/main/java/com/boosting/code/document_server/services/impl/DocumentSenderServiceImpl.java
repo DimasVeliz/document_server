@@ -25,7 +25,7 @@ public class DocumentSenderServiceImpl implements IDocumentSenderService {
     @Override
     public ServiceInfo sendDocument(Document document) {
 
-        WebClient.ResponseSpec responseSpec = webConfig.getJSONClient()
+        WebClient.ResponseSpec responseSpec = webConfig.getJSONClient(null)
                 .post().uri(Constants.DOCUMENTS_URI)
                 .body(Mono.just(document),Document.class)
                 .retrieve();
@@ -42,7 +42,7 @@ public class DocumentSenderServiceImpl implements IDocumentSenderService {
     @Override
     public Document getDocument(String uuid) {
         Optional<String> uuidEntity = Optional.ofNullable(uuid);
-        WebClient.ResponseSpec responseSpec = webConfig.getBinaryClient()
+        WebClient.ResponseSpec responseSpec = webConfig.getBinaryClient(null)
                 .get().uri(Constants.DOCUMENTS_DOWNLOAD_URI, uriBuilder ->
                    uriBuilder.queryParamIfPresent("documentUUID",uuidEntity).build()
                 )
