@@ -7,7 +7,7 @@ import com.boosting.code.document_server.entities.MetaDocument;
 
 import java.util.List;
 
-public interface IMetaDocumentService {
+public interface IMetaFileInfoService {
 
     ServiceInfo saveMetaDocument(MetaDocument metaDocument);
 

@@ -5,13 +5,12 @@ import com.boosting.code.document_server.dto.MetaDocumentDisplayDto;
 import com.boosting.code.document_server.dto.ServiceInfo;
 import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfoDto;
-import com.boosting.code.document_server.entities.Document;
+import com.boosting.code.document_server.entities.FileInfo;
 import com.boosting.code.document_server.entities.MetaDocument;
-import com.boosting.code.document_server.exceptions.DocumentException;
-import com.boosting.code.document_server.models.FileInfo;
-import com.boosting.code.document_server.services.IDocumentSenderService;
-import com.boosting.code.document_server.services.IDocumentService;
-import com.boosting.code.document_server.services.IMetaDocumentService;
+import com.boosting.code.document_server.services.IObjectStoreService;
+import com.boosting.code.document_server.services.IFileInfoGeneralService;
+import com.boosting.code.document_server.services.IMetaFileInfoService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -19,17 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DocumentServiceImpl implements IDocumentService {
+@RequiredArgsConstructor
+public class FileInfoGeneralServiceImpl implements IFileInfoGeneralService {
 
     Logger LOGGER = LogManager.getLogger(DocumentController.class);
 
-    IMetaDocumentService metaDocumentService;
-    IDocumentSenderService documentSenderService;
-
-    public DocumentServiceImpl(IMetaDocumentService metaDocumentService, IDocumentSenderService documentSenderService) {
-        this.metaDocumentService = metaDocumentService;
-        this.documentSenderService = documentSenderService;
-    }
+    private final IMetaFileInfoService metaDocumentService;
+    private final IObjectStoreService fileInfoService;
 
     @Override
     public ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto) {
@@ -45,11 +40,11 @@ public class DocumentServiceImpl implements IDocumentService {
 
         ServiceInfo metaInfo = metaDocumentService.saveMetaDocument(metaDocument);
 
-        Document document = new Document(metaDocument.getUuid(),
+        FileInfo document = new FileInfo(metaDocument.getUuid(),
                                         metaDocumentDto.getFileInfo().getMime(),
                                         metaDocumentDto.getFileInfo().getData());
 
-        ServiceInfo senderInfo =documentSenderService.sendDocument(document);
+        ServiceInfo senderInfo = fileInfoService.sendDocument(document);
 
         boolean state = metaInfo.isSuccessful() && senderInfo.isSuccessful();
 
@@ -79,9 +74,9 @@ public class DocumentServiceImpl implements IDocumentService {
             return null;
         }
 
-        Document document =documentSenderService.getDocument(uuid);
+        FileInfo document = fileInfoService.getDocument(uuid);
 
-        metaInfo.setFileInfo(new FileInfo(document.getMime(), document.getData()));
+        metaInfo.setFileInfo(new com.boosting.code.document_server.models.FileInfo(document.getMime(), document.getData()));
 
         LOGGER.info("DocumentService completed the processing, returning: {}", metaInfo);
 

@@ -4,7 +4,8 @@ package com.boosting.code.document_server.controller;
 import com.boosting.code.document_server.dto.MetaDocumentDisplayDto;
 import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfoDto;
-import com.boosting.code.document_server.services.IDocumentService;
+import com.boosting.code.document_server.services.IFileInfoGeneralService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+
 @RestController
-@RequestMapping("/api/documents")
+@RequestMapping("/cloud")
+@RequiredArgsConstructor
 public class DocumentController {
 
 
     Logger LOGGER = LogManager.getLogger(DocumentController.class);
-    private IDocumentService documentService;
-
-    @Autowired
-    public DocumentController(IDocumentService documentService) {
-        this.documentService = documentService;
-    }
+    private final IFileInfoGeneralService documentService;
 
     @GetMapping("/metadocuments")
     public ResponseEntity<List<MetaDocumentDisplayDto>> getListOfMetadata()

@@ -5,23 +5,19 @@ import com.boosting.code.document_server.dto.MetaDocumentDto;
 import com.boosting.code.document_server.dto.ServiceInfo;
 import com.boosting.code.document_server.entities.MetaDocument;
 import com.boosting.code.document_server.repositories.IMetaDocumentRepository;
-import com.boosting.code.document_server.services.IMetaDocumentService;
+import com.boosting.code.document_server.services.IMetaFileInfoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @Service
-public class MetaDocumentServiceImpl implements IMetaDocumentService {
+@RequiredArgsConstructor
+public class MetaFileInfoServiceImpl implements IMetaFileInfoService {
 
-    private IMetaDocumentRepository repository;
-
-    @Autowired
-    public MetaDocumentServiceImpl(IMetaDocumentRepository repository) {
-        this.repository = repository;
-    }
+    private final IMetaDocumentRepository repository;
 
     @Override
     public ServiceInfo saveMetaDocument(MetaDocument metaDocument) {
