@@ -13,5 +13,5 @@ public interface IMetaFileInfoService {
 
     MetaDocumentDto getMetaDocument(String uuid);
 
-    List<MetaDocumentDisplayDto> getAllMetadocuments();
+    List<MetaDocumentDisplayDto> getAllMetadocuments(String ownerUuid);
 }

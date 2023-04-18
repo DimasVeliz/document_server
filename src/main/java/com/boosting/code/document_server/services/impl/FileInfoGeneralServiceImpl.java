@@ -35,7 +35,7 @@ public class FileInfoGeneralServiceImpl implements IFileInfoGeneralService {
 
         MetaDocument metaDocument = new MetaDocument(0,metaDocumentDto.getName(),
                                                           metaDocumentDto.getYear(),
-                                                          metaDocumentDto.getOwner(),
+                                                          metaDocumentDto.getOwnerUuid(),
                                                           uuid);
 
         ServiceInfo metaInfo = metaDocumentService.saveMetaDocument(metaDocument);
@@ -50,7 +50,7 @@ public class FileInfoGeneralServiceImpl implements IFileInfoGeneralService {
 
         ServiceInfoDto response= new ServiceInfoDto(state, new MetaDocumentDisplayDto(metaDocument.getName(),
                                                                                 metaDocument.getYear(),
-                                                                                metaDocument.getOwner(),
+                                                                                metaDocument.getOwnerUuid(),
                                                                                 metaDocument.getUuid()),
                                                     new ArrayList<>());
 
@@ -84,9 +84,9 @@ public class FileInfoGeneralServiceImpl implements IFileInfoGeneralService {
     }
 
     @Override
-    public List<MetaDocumentDisplayDto> getDocumentsMetaData() {
+    public List<MetaDocumentDisplayDto> getDocumentsMetaData(String ownerUuid) {
 
-        List<MetaDocumentDisplayDto> metaDocuments = metaDocumentService.getAllMetadocuments();
+        List<MetaDocumentDisplayDto> metaDocuments = metaDocumentService.getAllMetadocuments(ownerUuid);
 
         return metaDocuments;
     }

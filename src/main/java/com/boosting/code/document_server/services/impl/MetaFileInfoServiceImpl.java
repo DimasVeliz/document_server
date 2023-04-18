@@ -39,17 +39,17 @@ public class MetaFileInfoServiceImpl implements IMetaFileInfoService {
         }
         return new MetaDocumentDto(response.getName(),
                                    response.getYear(),
-                                   response.getOwner(),null);
+                                   response.getOwnerUuid(),null);
     }
 
     @Override
-    public List<MetaDocumentDisplayDto> getAllMetadocuments() {
-        List<MetaDocument> metaDocuments = repository.findAll();
+    public List<MetaDocumentDisplayDto> getAllMetadocuments(String ownerUuid) {
+        List<MetaDocument> metaDocuments = repository.findByOwnerUuid(ownerUuid);
         if(metaDocuments.isEmpty()) return Collections.emptyList();
 
         return metaDocuments.stream().map(metaDoc -> new MetaDocumentDisplayDto(metaDoc.getName(),
                                                                         metaDoc.getYear(),
-                                                                        metaDoc.getOwner(),
+                                                                        metaDoc.getOwnerUuid(),
                                                                         metaDoc.getUuid()))
                                                                         .toList();
     }

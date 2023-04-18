@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +34,7 @@ public class ObjectStoreServiceImpl implements IObjectStoreService {
                 .queryString(null)
                 .body(stringifiedDoc)
                 .uri(Constants.DOCUMENTS_URI)
+                .headers(new HttpHeaders())
                 .build();
         ProxyResponseDto proxyResponseDto = proxyService
                                                 .processRequestGivenResources(protoRequest,
@@ -59,6 +61,7 @@ public class ObjectStoreServiceImpl implements IObjectStoreService {
                 .queryString("documentUUID=".concat(uuid))
                 .body(null)
                 .uri(Constants.DOCUMENTS_DOWNLOAD_URI)
+                .headers(new HttpHeaders())
                 .build();
 
         ProxyResponseDto proxyResponseDto = proxyService

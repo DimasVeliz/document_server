@@ -27,11 +27,11 @@ public class DocumentController {
     private final IFileInfoGeneralService documentService;
 
     @GetMapping("/metadocuments")
-    public ResponseEntity<List<MetaDocumentDisplayDto>> getListOfMetadata()
+    public ResponseEntity<List<MetaDocumentDisplayDto>> getListOfMetadata(@RequestHeader(name = "USER_UUID",value = "")String ownerUuid)
     {
         LOGGER.info("Attempting to get all the Metadata from Documents");
 
-        List<MetaDocumentDisplayDto> metadataResponse =documentService.getDocumentsMetaData();
+        List<MetaDocumentDisplayDto> metadataResponse =documentService.getDocumentsMetaData(ownerUuid);
 
         LOGGER.info("Successfully got all the Metadata from Documents: {}",metadataResponse);
 
