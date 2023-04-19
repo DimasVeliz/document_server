@@ -10,7 +10,7 @@ public interface IFileInfoGeneralService {
 
     ServiceInfoDto processDocumentInfo(MetaDocumentDto metaDocumentDto);
 
-    MetaDocumentDto processDownload(String uuid);
+    MetaDocumentDto processDownload(String uuid, String ownerUuid);
 
     List<MetaDocumentDisplayDto> getDocumentsMetaData(String ownerUuid);
 }

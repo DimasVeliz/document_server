@@ -53,10 +53,12 @@ public class DocumentController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadSpecificDocument(@RequestParam String documentUUID){
+    public ResponseEntity<byte[]> downloadSpecificDocument(
+            @RequestHeader(name = "USER_UUID",value = "")String ownerUuid,
+            @RequestParam String documentUUID){
         LOGGER.info("Attempting to download a Document with uuid: {}", documentUUID);
 
-        MetaDocumentDto metaDocumentDto =documentService.processDownload(documentUUID);
+        MetaDocumentDto metaDocumentDto =documentService.processDownload(documentUUID,ownerUuid);
 
         if(null==metaDocumentDto) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

@@ -64,13 +64,13 @@ public class FileInfoGeneralServiceImpl implements IFileInfoGeneralService {
     }
 
     @Override
-    public MetaDocumentDto processDownload(String uuid) {
+    public MetaDocumentDto processDownload(String uuid, String ownerUuid) {
 
         LOGGER.info("DocumentService received UUID: {} to download document", uuid);
 
 
         MetaDocumentDto metaInfo = metaDocumentService.getMetaDocument(uuid);
-        if(null == metaInfo){
+        if(null == metaInfo || !metaInfo.getOwnerUuid().equals(ownerUuid)){
             return null;
         }
 
